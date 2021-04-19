@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Zoeken in database</title>
+</head>
+<body>
+<form method="POST">
+    <p>
+        <label for="zoekwoord">Geef <b>zoekwoord</b> voor database</label>
+        <input name="zoekwoord"> <input type="submit">
+    <hr>
+    </p>
+</form>
+    <p>
+        {% for i in resultaten %}
+        <script type="text/javascript">
+            var str = "{{ i }}";
+            var substr = "{{ zoekwoord }}";
+            if (substr.length !== 0) {
+                var re = new RegExp(substr, "gi");
+                n_str = str.replace(re, '<b>' + substr + '</b>');
+            } else {
+                n_str = str
+            }
+            document.write(n_str);
+        </script>
+        <br>
+        {% endfor %}
+    </p>
+
+</body>
+</html>
