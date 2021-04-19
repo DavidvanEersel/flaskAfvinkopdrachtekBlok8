@@ -1,3 +1,5 @@
+import re
+
 from Bio import Entrez, Medline
 
 
@@ -31,8 +33,20 @@ def get_source(idlist):
     return source
 
 
+def get_year(source):
+    years = []
+    for year in source:
+        temp = (year[1].split(" "))
+        for i in range(len(temp)):
+            if re.match("[1-2][089][0-9]{2}", year[1].split(" ")[i]):
+                years.append(year[1].split()[i])
+    return years
+
+
 if __name__ == '__main__':
     term_ = input("Welk woord wil je gebruiken om te zoeken? ")
     retmax_ = get_retmax(term_)
     idlist_ = get_idlist(term_, retmax_)
-    get_source(idlist_)
+    source_ = get_source(idlist_)
+    year_ = get_year(source_)
+    print(year_)
