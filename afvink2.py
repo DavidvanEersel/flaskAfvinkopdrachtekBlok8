@@ -1,6 +1,7 @@
 import re
 
 from Bio import Entrez, Medline
+from matplotlib import pyplot as plt
 
 
 def get_retmax(term):
@@ -38,9 +39,19 @@ def get_year(source):
     for year in source:
         temp = (year[1].split(" "))
         for i in range(len(temp)):
-            if re.match("[1-2][089][0-9]{2}", year[1].split(" ")[i]):
+            if re.match("^[1-2][089][0-9]{2}$", year[1].split(" ")[i]):
                 years.append(year[1].split()[i])
-    return years
+    return list(map(int, years))
+
+
+def make_plot(years):
+    binlist = []
+    for i in range(min(years), max(years), 5):
+        binlist.append(i)
+    print(binlist)
+    plt.hist(sorted(years), bins=binlist)
+    print(len(years))
+    plt.show()
 
 
 if __name__ == '__main__':
@@ -49,4 +60,4 @@ if __name__ == '__main__':
     idlist_ = get_idlist(term_, retmax_)
     source_ = get_source(idlist_)
     year_ = get_year(source_)
-    print(year_)
+    make_plot(year_)
