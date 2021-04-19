@@ -3,6 +3,8 @@ import re
 from Bio import Entrez, Medline
 from matplotlib import pyplot as plt
 
+year = []
+
 
 def get_retmax(term):
     Entrez.email = "akd.vaneersel@student.han.nl"
@@ -46,18 +48,21 @@ def get_year(source):
 
 def make_plot(years):
     binlist = []
-    for i in range(min(years), max(years), 5):
+
+    for i in range(min(years[0]), max(years[0]), 5):
         binlist.append(i)
-    print(binlist)
-    plt.hist(sorted(years), bins=binlist)
-    print(len(years))
+    for i in range(len(years)):
+        plt.hist(sorted(years[i]), bins=binlist, alpha=0.3)
     plt.show()
 
 
 if __name__ == '__main__':
-    term_ = input("Welk woord wil je gebruiken om te zoeken? ")
-    retmax_ = get_retmax(term_)
-    idlist_ = get_idlist(term_, retmax_)
-    source_ = get_source(idlist_)
-    year_ = get_year(source_)
-    make_plot(year_)
+    hvh = input("Hoeveel woorden wil je zoeken? ")
+    year_ = []
+    for times in range(int(hvh)):
+        term_ = input("Welk woord wil je gebruiken om te zoeken? ")
+        retmax_ = get_retmax(term_)
+        idlist_ = get_idlist(term_, retmax_)
+        source_ = get_source(idlist_)
+        year.append(get_year(source_))
+    make_plot(year)
